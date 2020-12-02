@@ -2,12 +2,9 @@ import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-# target buffering time
-tb = 35.0
 
 
 def fuzzyficationBufferingTime():
-
     """
         Function responsible for modeling the
         input and output variables for the fuzzy
@@ -18,6 +15,8 @@ def fuzzyficationBufferingTime():
             - buffering time, diference between buffering times
             and output fuzzyfication modeling
     """
+    # target buffering time
+    tb = 35.0
     buffTime = ctrl.Antecedent(np.arange(0, 150, 0.1), 'buffTime')
     diffBuffTime = ctrl.Antecedent(np.arange(-40, 150, 0.1), 'diffBuffTime')
     output = ctrl.Antecedent(np.arange(0, 3, 0.1), 'diffBuffTime')
@@ -44,7 +43,7 @@ def fuzzyficationBufferingTime():
                                     [0.5, 1, 1.5])
     output['smallIncrease'] = fuzz.trimf(output.universe,
                                          [1, 1.5, 2])
-    output['Increase'] = fuzz.trapmf(output.universe,
+    output['increase'] = fuzz.trapmf(output.universe,
                                      [1.5, 2, 3, 4])
 
     return (buffTime, diffBuffTime, output)
