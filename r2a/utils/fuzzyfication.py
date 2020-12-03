@@ -17,22 +17,22 @@ def fuzzyficationBufferingTime():
     """
     # target buffering time
     tb = 35.0
-    buffTime = ctrl.Antecedent(np.arange(0, 150, 0.1), 'buffTime')
-    diffBuffTime = ctrl.Antecedent(np.arange(-40, 150, 0.1), 'diffBuffTime')
-    output = ctrl.Antecedent(np.arange(0, 3, 0.1), 'diffBuffTime')
+    bufferTime = ctrl.Antecedent(np.arange(0, 150, 0.1), 'bufferTime')
+    diffBufferTime = ctrl.Antecedent(np.arange(-40, 150, 0.1), 'diffBufferTime')
+    output = ctrl.Consequent(np.arange(0, 3, 0.1), 'output')
 
-    buffTime['short'] = fuzz.trapmf(buffTime.universe,
+    bufferTime['short'] = fuzz.trapmf(bufferTime.universe,
                                     [-6, -2, 2*tb/3, tb])
-    buffTime['close'] = fuzz.trapmf(buffTime.universe,
+    bufferTime['close'] = fuzz.trapmf(bufferTime.universe,
                                     [2*tb/3, tb, tb+1, 4*tb])
-    buffTime['long'] = fuzz.trapmf(buffTime.universe,
+    bufferTime['long'] = fuzz.trapmf(bufferTime.universe,
                                    [tb, 4*tb, 4*tb+20, 4*tb+30])
 
-    diffBuffTime['falling'] = fuzz.trapmf(diffBuffTime.universe,
+    diffBufferTime['falling'] = fuzz.trapmf(diffBufferTime.universe,
                                           [-40, -35, -2*tb/3, 0])
-    diffBuffTime['steady'] = fuzz.trimf(diffBuffTime.universe,
+    diffBufferTime['steady'] = fuzz.trimf(diffBufferTime.universe,
                                         [-2*tb/3, 0, 4*tb])
-    diffBuffTime['rising'] = fuzz.trapmf(diffBuffTime.universe,
+    diffBufferTime['rising'] = fuzz.trapmf(diffBufferTime.universe,
                                          [0, 4*tb, 4*tb + 20, 4*tb + 30])
 
     output['reduce'] = fuzz.trapmf(output.universe,
@@ -46,11 +46,11 @@ def fuzzyficationBufferingTime():
     output['increase'] = fuzz.trapmf(output.universe,
                                      [1.5, 2, 3, 4])
 
-    return (buffTime, diffBuffTime, output)
+    return (bufferTime, diffBufferTime, output)
 
 
-# (buffTime, diffBuffTime, output) = fuzzyficationBufferingTime()
+# (bufferTime, diffBufferTime, output) = fuzzyficationBufferingTime()
 
-# buffTime.view()
-# diffBuffTime.view()
+# bufferTime.view()
+# diffBufferTime.view()
 # output.view()
