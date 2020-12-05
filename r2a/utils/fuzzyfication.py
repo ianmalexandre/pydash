@@ -17,8 +17,8 @@ def fuzzyficationBufferingTime():
     """
     # target buffering time
     tb = 35.0
-    bufferTime = ctrl.Antecedent(np.arange(0, 150, 0.1), 'bufferTime')
-    diffBufferTime = ctrl.Antecedent(np.arange(-40, 150, 0.1), 'diffBufferTime')
+    bufferTime = ctrl.Antecedent(np.arange(0, 4*tb+10, 0.1), 'bufferTime')
+    diffBufferTime = ctrl.Antecedent(np.arange(-tb-10, 4*tb+10, 0.1), 'diffBufferTime')
     output = ctrl.Consequent(np.arange(0, 3, 0.1), 'output')
 
     bufferTime['short'] = fuzz.trapmf(bufferTime.universe,
@@ -29,7 +29,7 @@ def fuzzyficationBufferingTime():
                                    [tb, 4*tb, 4*tb+20, 4*tb+30])
 
     diffBufferTime['falling'] = fuzz.trapmf(diffBufferTime.universe,
-                                          [-40, -35, -2*tb/3, 0])
+                                          [-tb-5, -tb, -2*tb/3, 0])
     diffBufferTime['steady'] = fuzz.trimf(diffBufferTime.universe,
                                         [-2*tb/3, 0, 4*tb])
     diffBufferTime['rising'] = fuzz.trapmf(diffBufferTime.universe,

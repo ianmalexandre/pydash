@@ -40,11 +40,6 @@ class R2AFuzzy(IR2A):
         self.quality_ctrl = ctrl.ControlSystem(self.rules)
         self.throughputs = []
         self.request_time = 0.0
-        self.throughput = 0.0
-        self.bitrate = 0.0
-        self.segmentDuration = 0.0
-        self.downloadRecieved = 0.0
-        self.downloadStart = 0.0
 
     def createSim(self, bufferTime, diffBufferTime):
         qi = ctrl.ControlSystemSimulation(self.quality_ctrl)
@@ -59,6 +54,7 @@ class R2AFuzzy(IR2A):
         # self.output.view(sim=qi)
 
     def handle_xml_request(self, msg):
+        self.request_time = time.perf_counter()
         self.send_down(msg)
 
     def handle_xml_response(self, msg):
@@ -89,11 +85,18 @@ class R2AFuzzy(IR2A):
         print(f'Resultado do computing {compute_fuzzy}')
 
         available_throughtput = mean(self.throughputs)
-        predictBitrate = floor(compute_fuzzy*available_throughtput)
-        predictBitrate = predictBitrate if predictBitrate < 19.0 else 19.0
+        predictBitrate = compute_fuzzy*available_throughtput
         print(f'the new bitrate is {predictBitrate}')
 
-        newQi = int(predictBitrate)
+        # Encontra o elemento mais próximo do bitrate desejado
+        newQi = min(self.qi, key=lambda x:abs(x - predictBitrate))
+
+        # Encontra o index
+        newQi = self.qi.index(newQi)
+        print('Nova qualidade', newQi)
+        # newQi = int(predictBitrate)
+        
+        print('Qualidade 10', self.qi[10])
         msg.add_quality_id(self.qi[newQi])
         self.send_down(msg)
 
