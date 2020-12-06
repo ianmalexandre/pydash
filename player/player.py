@@ -13,6 +13,7 @@ import glob
 import os
 import threading
 import time
+from statistics import mean
 from matplotlib import pyplot as plt
 
 from base.configuration_parser import ConfigurationParser
@@ -246,10 +247,12 @@ class Player(SimpleModule):
         self.send_down(xml_request)
 
     def finalization(self):
-
+        
         print(f'Pauses number: {self.pauses_number}')
 
         [os.remove(f) for f in glob.glob('./results/*.png')]
+        print(f'Playback mean quality, {mean(self.playback_qi.get_items())}')
+        print(f'Playback mean bufferSize, {mean(self.playback_buffer_size.get_items())}')
 
         self.logging_all_statistics()
 
