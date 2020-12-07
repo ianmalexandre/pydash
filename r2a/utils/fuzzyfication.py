@@ -16,7 +16,7 @@ def fuzzyficationBufferingTime():
             and output fuzzyfication modeling
     """
     # target buffering time
-    tb = 15.0
+    tb = 35.0
     bufferTime = ctrl.Antecedent(np.arange(0, 4*tb+110, 0.1), 'bufferTime')
     diffBufferTime = ctrl.Antecedent(np.arange(-tb-10, 4*tb+110, 0.1), 'diffBufferTime')
     output = ctrl.Consequent(np.arange(0, 3, 0.1), 'output')
@@ -49,8 +49,8 @@ def fuzzyficationBufferingTime():
     return (bufferTime, diffBufferTime, output)
 
 
-# (bufferTime, diffBufferTime, output) = fuzzyficationBufferingTime()
+(bufferTime, diffBufferTime, output) = fuzzyficationBufferingTime()
 
-# bufferTime.view()
-# diffBufferTime.view()
-# output.view()
+bufferTime.view()
+diffBufferTime.view()
+output.view()

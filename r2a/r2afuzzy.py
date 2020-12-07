@@ -66,6 +66,7 @@ class R2AFuzzy(IR2A):
         self.send_up(msg)
 
     def handle_segment_size_request(self, msg):
+        self.request_time = time.perf_counter()
         time_list = self.whiteboard.get_playback_segment_size_time_at_buffer()
 
         # Se o tamanho da lista for menor que 2,
@@ -85,7 +86,8 @@ class R2AFuzzy(IR2A):
         if len(self.throughputs) < 10:
             available_throughtput = mean(self.throughputs)
         else:
-            available_throughtput = self.throughputs[-9:] / 10
+            available_throughtput = sum(self.throughputs[-10:]) / 10
+
         predictBitrate = compute_fuzzy*available_throughtput
         print(f'the new bitrate is {predictBitrate}')
 
@@ -100,6 +102,8 @@ class R2AFuzzy(IR2A):
         self.send_down(msg)
 
     def handle_segment_size_response(self, msg):
+        t = time.perf_counter() - self.request_time
+        self.throughputs.append(msg.get_bit_length() / t)
         self.send_up(msg)
 
     def initialize(self):

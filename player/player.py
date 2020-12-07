@@ -251,8 +251,8 @@ class Player(SimpleModule):
         print(f'Pauses number: {self.pauses_number}')
 
         [os.remove(f) for f in glob.glob('./results/*.png')]
-        print(f'Playback mean quality, {mean(self.playback_qi.get_items())}')
-        print(f'Playback mean bufferSize, {mean(self.playback_buffer_size.get_items())}')
+        print(f'Playback mean quality, {self.playback_qi.get_items()}')
+        print(f'Playback mean bufferSize, {self.playback_buffer_size.get_items()}')
 
         self.logging_all_statistics()
 
